@@ -32,13 +32,8 @@ fn main() {
         }
 
         // logic
-        'outermost: for word in words {
-            write!(out, "{} ", String::from_utf8_lossy(word)).unwrap();
-                    if has_word(&board, word) {
-                        writeln!(out, "YES").unwrap();
-                        continue 'outermost;
-                    }
-            writeln!(out, "NO").unwrap();
+        for word in words {
+            writeln!(out, "{} {}", String::from_utf8_lossy(word), if has_word(&board, word) {"YES"} else {"NO"}).unwrap();
         }
     }
 
