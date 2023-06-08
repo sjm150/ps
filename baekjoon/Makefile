@@ -11,3 +11,8 @@ $(TARGETS):
 -PHONY: clean
 clean:
 	find . -type f -executable -exec rm '{}' \;
+
+-PHONY: new
+new:
+	mkdir $(dir);
+	cp template.cpp $(dir)/solution.cpp;
