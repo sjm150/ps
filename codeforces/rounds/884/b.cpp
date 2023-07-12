@@ -2,12 +2,10 @@
 
 using namespace std;
 
-int out[200000];
-
-bool not_prime[200001];
+bool not_prime[200002];
 void init() {
-    for (int i = 2; i <= 200000; i++) {
-        for (int j = i * 2; j <= 200000; j += i) {
+    for (int i = 2; i <= 200001; i++) {
+        for (int j = i * 2; j <= 200001; j += i) {
             not_prime[j] = true;
         }
     }
@@ -22,19 +20,13 @@ int main() {
     while (t--) {
         int n;
         cin >> n;
-        int s = 0, e = n - 1;
-        int m = (s + e + 1) / 2;
-        int ml = m - 1, mr = m + 1;
-        out[m] = 1;
-        int curr = 2;
-        while (s <= ml) {
-            if (not_prime[curr]) out[ml--] = curr++;
-            else out[s++] = curr++;
-            if (mr > e) break;
-            if (not_prime[curr]) out[mr++] = curr++;
-            else out[e--] = curr++;
+        int curr = 4;
+        for (int i = 0; i < n; i++) {
+            if (i == n / 2) cout << 1 << ' ';
+            else if (i == 0) cout << 2 << ' ';
+            else if (i == n - 1) cout << 3 << ' ';
+            else cout << curr++ << ' ';
         }
-        for (int i = 0; i < n; i++) cout << out[i] << ' ';
         cout << '\n';
     }
 }
