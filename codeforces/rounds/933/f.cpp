@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 
 int main() {
     cin.tie(0); ios_base::sync_with_stdio(0);
@@ -10,32 +11,29 @@ int main() {
         for (int i = 0; i < n; i++) cin >> a[i];
         for (int i = 0; i < m; i++) cin >> d[i];
         for (int i = 0; i < k; i++) cin >> f[i];
+        sort(d.begin(), d.end());
         sort(f.begin(), f.end());
 
-        int maxd[2] = {0, 0};
-        int maxi = -1;
-        for (int i = 1; i < n; i++) {
-            if (a[i] - a[i - 1] > maxd[0]) {
-                maxd[1] = maxd[0];
-                maxd[0] = a[i] - a[i - 1];
-                maxi = i - 1;
-            } else if (a[i] - a[i - 1] > maxd[1]) {
-                maxd[1] = a[i] - a[i - 1];
+        int maxi = 0, lim = 0;
+        for (int i = 1; i < n - 1; i++) {
+            if (a[maxi + 1] - a[maxi] < a[i + 1] - a[i]) {
+                lim = a[maxi + 1] - a[maxi];
+                maxi = i;
+            } else if (lim < a[i + 1] - a[i]) {
+                lim = a[i + 1] - a[i];
             }
         }
 
-        auto val = [&](int x) { return max(abs(x - a[maxi]), abs(x - a[maxi + 1])); };
-        for (int d: d) {
-            int l = 0, r = k - 1;
-            while ((r - l) >= 3) {
-                int dlt = (r - l) / 3;
-                int lv = val(f[l + dlt] + d), rv = val(f[r - dlt] + d);
-                if (lv > rv) l += dlt;
-                else r -= dlt;
-            }
-            maxd[0] = min(min(maxd[0], val(f[l] + d)), min(val(f[l + 1] + d), val(f[l + 2] + d)));
+        int l = a[maxi], r = a[maxi + 1];
+        int tar = (ll(l) + r) / 2;
+        int j = k - 1;
+        int ans = r - l;
+        for (int i = 0; i < m; i++) {
+            while (j >= 0 && d[i] + f[j] > tar) j--;
+            if (j >= 0) ans = min(ans, max(abs(d[i] + f[j] - l), abs(d[i] + f[j] - r)));
+            if (j < k - 1) ans = min(ans, max(abs(d[i] + f[j + 1] - l), abs(d[i] + f[j + 1] - r)));
         }
 
-        cout << max(maxd[0], maxd[1]) << '\n';
+        cout << max(ans, lim) << '\n';
     }
 }
