@@ -1,18 +1,17 @@
 CC = g++
-VERSION = -std=c++17
-CXXFLAGS = -Wall -O2
-SRCS = *.cpp
-OBJS = *.o
-TARGETS = *.out
+VERSION = -std=c++2a
+FLAGS = -Wall -O2
+TARGETS = solution
 
-$(TARGETS):
-	$(CC) $(VERSION) $(CXXFLACS) $(SRCS) -o $(TARGETS)
+.SECONDEXPANSION:
+$(TARGETS): $$@.cpp
+	$(CC) $(VERSION) $(FLAGS) $< -o $@
 
 -PHONY: clean
 clean:
-	find . -type f -executable -exec rm '{}' \;
+	rm -r $$(ls | grep -v .cpp | grep -v Makefile)
 
--PHONY: new
-new:
-	mkdir $(dir);
-	cp template.cpp $(dir)/solution.cpp;
+-PHONY: done
+done: clean
+	rm Makefile
+	git add *.cpp
