@@ -4,13 +4,12 @@ using namespace std;
 int main() {
     cin.tie(0); ios_base::sync_with_stdio(0);
     int t; cin >> t;
+    function<int(int, int)> gcd = [&](int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    };
     while (t--) {
         int a, b; cin >> a >> b;
-        for (int i = min(a, b); ; i++) {
-            if (i % a == i % b) {
-                cout << i << '\n';
-                break;
-            }
-        }
+        cout << a / gcd(a, b) * b << '\n';
     }
 }
