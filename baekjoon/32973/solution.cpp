@@ -43,6 +43,6 @@ int main() {
         for (int i = sz; i >= 0; i--) {
             if (h[d] - h[y] > (1 << i)) d = anc[i][d];
         }
-        cout << f[y] + sum[d] - sum[x] - v[x] * (h[x] - h[d]) << '\n';
+        cout << f[y] + sum[d] - sum[x] - v[x] * ll(h[x] - h[d]) << '\n';
     }
 }
