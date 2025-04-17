@@ -14,7 +14,7 @@ int main() {
         Linear(ll a, ll b): a(a), b(b), s(0) {}
     } ln_t;
     auto cpx = [](ln_t &a, ln_t b) {
-        return (b.b - a.b) / (a.a - b.a);
+        return (b.b - a.b + a.a - b.a - 1) / (a.a - b.a);
     };
 
     vector<ln_t> stk;
