@@ -9,7 +9,7 @@ $(TARGETS): $$@.cpp
 
 -PHONY: clean
 clean:
-	rm -r $$(ls | grep -v .cpp | grep -v Makefile)
+	rm -rf $$(ls | grep -v .cpp | grep -v Makefile)
 
 -PHONY: done
 done: clean
