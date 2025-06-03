@@ -10,48 +10,59 @@ int main() {
         string s;
         cin >> s;
 
-        multiset<int> ba, ca, bc, cb;
-        for (int i = 0; i < q; i++) {
-            string xy = "  ";
-            cin >> xy[0] >> xy[1];
-            if (xy == "ba") ba.insert(i);
-            else if (xy == "ca") ca.insert(i);
-            else if (xy == "bc") bc.insert(i);
-            else if (xy == "cb") cb.insert(i);
+        int cb = 0, ba = 0, ca = 0, bc = 0, cba = 0, bca = 0;
+        while (q--) {
+            char x, y;
+            cin >> x >> y;
+            if (x == 'c' && y == 'b') {
+                cb++;
+            } else if (x == 'b' && y == 'a') {
+                ba++;
+                if (cb && ba) {
+                    cb--, ba--;
+                    cba++;
+                }
+            } else if (x == 'c' && y == 'a') {
+                ca++;
+                if (bc && ca) {
+                    bc--, ca--;
+                    bca++;
+                }
+            } else if (x == 'b' && y == 'c') {
+                bc++;
+            }
         }
 
         for (char &c: s) {
             if (c == 'b') {
-                if (!ba.empty()) {
-                    ba.erase(ba.begin());
+                if (ba) {
+                    ba--;
                     c = 'a';
-                } else if (!bc.empty() && !ca.empty()) {
-                    auto it = ca.lower_bound(*bc.begin());
-                    if (it != ca.end()) {
-                        bc.erase(bc.begin());
-                        ca.erase(it);
-                        c = 'a';
-                    }
+                } else if (cba) {
+                    cba--;
+                    cb++;
+                    c = 'a';
+                } else if (bca) {
+                    bca--;
+                    c = 'a';
                 }
             } else if (c == 'c') {
-                if (!ca.empty()) {
-                    ca.erase(ca.begin());
+                if (ca) {
+                    ca--;
                     c = 'a';
-                } else if (!cb.empty() && !ba.empty()) {
-                    auto it = ba.lower_bound(*cb.begin());
-                    if (it != ba.end()) {
-                        cb.erase(cb.begin());
-                        ba.erase(it);
-                        c = 'a';
-                    }
-                }
-                if (c == 'c' && !cb.empty()) {
-                    cb.erase(prev(cb.end()));
+                } else if (bca) {
+                    bca--;
+                    bc++;
+                    c = 'a';
+                } else if (cba) {
+                    cba--;
+                    c = 'a';
+                } else if (cb) {
+                    cb--;
                     c = 'b';
                 }
             }
         }
-
         cout << s << '\n';
     }
 }
