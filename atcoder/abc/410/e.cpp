@@ -8,15 +8,12 @@ int main() {
     vector<int> a(n), b(n);
     for (int i = 0; i < n; i++) cin >> a[i] >> b[i];
 
-    int l = 0, r = n;
-    while (l < r) {
-        int md = (l + r) / 2;
-        vector<int> mx(h + 1, 0);
-        for (int i = 0; i <= md; i++) {
-            for (int j = h; j >= a[i]; j--) mx[j] = max(mx[j], mx[j - a[i]] + b[i]);
-        }
-        if (accumulate(b.begin(), b.begin() + md + 1, 0) - *max_element(mx.begin(), mx.end()) <= m) l = md + 1;
-        else r = md;
+    vector<vector<int>> mxh(n + 1, vector<int>(m + 1, -1));
+    mxh[0][m] = h;
+    int i = 1;
+    for (; i <= n; i++) {
+        for (int j = 0; j <= m; j++) mxh[i][j] = max(mxh[i][j], max(mxh[i - 1][j] - a[i - 1], j + b[i - 1] <= m ? mxh[i - 1][j + b[i - 1]] : -1));
+        if (*max_element(mxh[i].begin(), mxh[i].end()) < 0) break;
     }
-    cout << r << '\n';
+    cout << i - 1 << '\n';
 }
